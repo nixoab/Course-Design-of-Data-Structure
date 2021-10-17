@@ -1,49 +1,44 @@
-# 统计字符出现频率，生成映射表
 def count_freq(text):
-    chars = []
+    dictionary = {x:text.count(x) for x in text}
     chars_freqs = []
-    for i in range(0, len(text)):
-        if text[i] in chars:
-            pass
-        else:
-            chars.append(text[i])
-            char_freq = (text[i], text.count(text[i]))
-            chars_freqs.append(char_freq)
+    for key, value in dictionary.items():
+        char_freq = (key, value)
+        chars_freqs.append(char_freq)
     return chars_freqs
 
+import heapq
 
-# 节点类
 class Node:
     def __init__(self, freq):
         self.left = None
         self.right = None
         self.father = None
         self.freq = freq
-
     def isLeft(self):
         return self.father.left == self
-
+    def __lt__(self,other):
+        return self.freq < other.freq
 
 # 创建叶子节点
 def createNodes(freqs):
     return [Node(freq) for freq in freqs]
 
-
 # 创建Huffman树
 def createHuffmanTree(nodes):
-    queue = nodes[:]
-    while len(queue) > 1:
-        queue.sort(key = lambda item: item.freq)
-        node_left = queue.pop(0)
-        node_right = queue.pop(0)
+    heap = []
+    for item in nodes:
+        heapq.heappush(heap, item)
+    while len(heap) > 1:
+        node_left = heapq.heappop(heap)
+        node_right = heapq.heappop(heap)
         node_father = Node(node_left.freq + node_right.freq)
         node_father.left = node_left
         node_father.right = node_right
         node_left.father = node_father
         node_right.father = node_father
-        queue.append(node_father)
-    queue[0].father = None
-    return queue[0]
+        heap.append(node_father)
+    heap[0].father = None
+    return heap[0]
 
 
 # Huffman编码
@@ -98,4 +93,5 @@ if __name__ == '__main__':
     print(huffmanStr)
     print(orignStr)
 
-    https://www.92python.com/view/354.html
+
+#    https://www.92python.com/view/354.html
