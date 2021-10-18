@@ -78,6 +78,7 @@ def decodeStr(huffmanStr, chars_freqs, codes):
                 if huffmanStr.index(item) == 0:
                     orignStr += chars_freqs[i][0]
                     huffmanStr = huffmanStr[len(item):]
+                    break
             i += 1
     return orignStr
 
