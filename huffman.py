@@ -93,6 +93,3 @@ if __name__ == '__main__':
     orignStr = decodeStr(huffmanStr, chars_freqs, codes)
     print(huffmanStr)
     print(orignStr)
-
-
-#    https://www.92python.com/view/354.html
