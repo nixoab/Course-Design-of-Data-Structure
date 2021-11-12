@@ -28,6 +28,7 @@ class HuffmanTree(object):
             self.Leav.append(c)
         self.root = self.Leav[0]
         self.Buffer = list(range(10))
+        self.codes = []
     #用递归的思想生成编码
     def pre(self, tree, length):
         node = tree
@@ -40,14 +41,27 @@ class HuffmanTree(object):
                 #print (self.Buffer[i], end = '')
                 s += self.Buffer[i]
             print (s + '\n')
+            code = (node.name, s)
+            self.codes.append(code)
             return
         self.Buffer[length] = '0'
         self.pre(node.left, length + 1)
         self.Buffer[length] = '1'
         self.pre(node.right, length + 1)
     #生成哈夫曼编码   
-    def get_code(self):
+    def encodeStr(self, text):
+        huffmanStr = ''
+        for char in text:
+            for item in self.codes:
+                if char == item[0]:
+                    huffmanStr += item[1]
+                    break
+        return huffmanStr
+    def get_code(self, text):
         self.pre(self.root, 0)
+        print(self.codes)
+        haf = self.encodeStr(text)
+        print(haf)
 
 if __name__=='__main__':
     #输入的是字符及其频数
@@ -55,4 +69,4 @@ if __name__=='__main__':
     #char_weights = [(' ', 5), ('w', 4), ('l', 4), ('e', 2), ('i', 2), ('r',1), ('u', 1)]
     char_weights = count_freq(text)
     tree = HuffmanTree(char_weights)
-    tree.get_code()
+    tree.get_code(text)
