@@ -20,12 +20,16 @@ class HuffmanTree(object):
         self.codes = []            #编码表
         self.huffmanStr = ""       #编码
         self.originStr = ""        #解码
+        self.pre(self.root, 0)
+        self.encodeStr()
+        self.decodeStr()
     #字频统计
     def count_freq(self):
         dictionary = {c : self.text.count(c) for c in self.text}
         for key, value in dictionary.items():
             char_freq = (key, value)
             self.chars_freqs.append(char_freq)
+        return self.chars_freqs
     #建树
     def creatTree(self):
         while len(self.Leav) != 1:
@@ -43,8 +47,10 @@ class HuffmanTree(object):
         elif node.name:
             for i in range(length):
                 s += self.curCode[i]
-            code = (node.name, s)
-            self.codes.append(code)
+            for item in self.chars_freqs:
+                if node.name == item[0]:
+                    code = (node.name, item[1], s)
+                    self.codes.append(code)
             return
         self.curCode[length] = '0'
         self.pre(node.left, length + 1)
@@ -55,24 +61,24 @@ class HuffmanTree(object):
         for char in self.text:
             for item in self.codes:
                 if char == item[0]:
-                    self.huffmanStr += item[1]
+                    self.huffmanStr += item[2]
                     break
+        return self.huffmanStr
     #哈夫曼解码
     def decodeStr(self):
         self.originStr = ''
         while self.huffmanStr != '':
             for item in self.codes:
-                if item[1] in self.huffmanStr:
-                    if self.huffmanStr.index(item[1]) == 0:
+                if item[2] in self.huffmanStr:
+                    if self.huffmanStr.index(item[2]) == 0:
                         self.originStr += item[0]
-                        self.huffmanStr = self.huffmanStr[len(item[1]):]
+                        self.huffmanStr = self.huffmanStr[len(item[2]):]
                         break
+        return self.originStr
     def get_code(self):
-        self.pre(self.root, 0)
+        print(self.chars_freqs)
         print(self.codes)
-        self.encodeStr()
         print(self.huffmanStr)
-        self.decodeStr()
         print(self.originStr)
 
 if __name__=='__main__':
