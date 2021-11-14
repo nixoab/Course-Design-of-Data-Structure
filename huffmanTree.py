@@ -67,12 +67,13 @@ class HuffmanTree(object):
     #哈夫曼解码
     def decodeStr(self):
         self.originStr = ''
-        while self.huffmanStr != '':
+        temp = self.huffmanStr
+        while temp != '':
             for item in self.codes:
-                if item[2] in self.huffmanStr:
-                    if self.huffmanStr.index(item[2]) == 0:
+                if item[2] in temp:
+                    if temp.index(item[2]) == 0:
                         self.originStr += item[0]
-                        self.huffmanStr = self.huffmanStr[len(item[2]):]
+                        temp = temp[len(item[2]):]
                         break
         return self.originStr
     def get_code(self):
